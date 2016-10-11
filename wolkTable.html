@@ -1,0 +1,66 @@
+<!--TABLE CONTAINER-->
+<div id="tableContainer">
+
+  <!--SEARCH CONTAINER CONTENT-->
+  <md-content id="searchContainer" ng-if="vm.tableConfig.search.serverSearch || vm.tableConfig.search.liveSearch">
+    <md-input-container id="searchInputField">
+      <label>{{::vm.tableConfig.search.searchLabel}}</label>
+      <input ng-model="vm.searchTerm" type="text">
+    </md-input-container>
+    <md-input-container id="searchButton">
+      <md-button class="md-primary md-raised">{{::vm.tableConfig.search.searchLabel}}</md-button>
+    </md-input-container>
+  </md-content>
+
+  <!--TABLE CONTAINER-->
+  <md-table-container>
+    <table md-table md-row-select multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise">
+      <thead md-head md-order="vm.tableConfig.order" md-on-reorder="vm.tableConfig.sort.serverSideSortingCallback(0, 6)">
+        <tr md-row>
+          <th
+            md-column
+            ng-repeat="column in vm.columns track by $index"
+            md-order-by="{{column}}">
+            <span>{{column}}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <!--RENDER IF SERVER SIDE SORTING IS ENABLED AND SERVER SIDE SEARCH ENABLED-->
+        <tr
+          ng-if="vm.tableConfig.serverSideSorting" 
+          md-row
+          ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit"
+          md-select="user"
+          md-select-id="user[vm.tableConfig.order]"
+          md-auto-select 
+          ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
+            <td md-cell ng-repeat="(key, value) in user">{{value}}</td>
+        </tr>
+        <!--RENDER IF SERVER SIDE SORTING IS DISABLED ( DEFAULT ) AND SERVER SIDE SEARCH DISABLED (LIVE SEARCH ENABLED)-->
+        <tr 
+          ng-if="!vm.tableConfig.serverSideSorting"
+          md-row
+          ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit | orderBy : vm.tableConfig.order | filter : vm.searchTerm"
+          md-select="user"
+          md-select-id="user[vm.tableConfig.order]"
+          md-auto-select 
+          ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
+            <td md-cell ng-repeat="(key, value) in user">{{value}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+
+  <!--PAGINATION CONTAINER-->
+  <md-table-pagination
+    md-limit="vm.tableConfig.limit"
+    md-limit-options="[5, 10, 15]"
+    md-page="vm.tableConfig.page"
+    md-total="{{vm.tableData.length}}"
+    md-on-paginate="vm.tableConfig.pagingCallback()"
+    md-page-select
+    md-boundary-links="true">
+  </md-table-pagination>
+
+</div>

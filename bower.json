@@ -1,0 +1,37 @@
+{
+  "name": "wolkTable",
+  "version": "0.1.0",
+  "description": "Table component for angular-material-data-table.",
+  "main": [
+    "wolkTable.js",
+    "wolkTable.html",
+    "wolkTable.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cvile/wolkTable.git"
+  },
+  "authors": [
+    "Milan Cvijetinovic"
+  ],
+  "homepage": "http://cvijetinovic.com",
+  "license": "MIT",
+  "keywords": [
+    "material",
+    "table",
+    "md-data-table",
+    "component"
+  ],
+  "ignore": [
+    "**/.*",
+    "app",
+    "bower_components",
+    "node_modules",
+    "src",
+    "Gruntfile.js"
+  ],
+  "dependencies": {
+    "angular": "^1.4.0",
+    "angular-material": "^1.1.0"
+  }
+}
