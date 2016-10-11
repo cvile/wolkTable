@@ -34,6 +34,6 @@
     "angular": "^1.4.0",
     "angular-material": "^1.1.0",
     "angular-material-data-table": "^0.10.9",
-    "https://github.com/alvaro-prieto/colResizable.git" : "~1.6"
+    "col-resizable" : "^1.6"
   }
 }
