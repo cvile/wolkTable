@@ -14,7 +14,13 @@
 
   <!--TABLE CONTAINER-->
   <md-table-container>
-    <table md-table md-row-select multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise">
+    
+    <!-- TABLE RESIZE ENABLED -->
+    <table ng-if="vm.tableConfig.resize" md-table md-row-select multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise" table-resize>
+    
+    <!-- TABLE RESIZE DISABLED -->
+    <table ng-if="!vm.tableConfig.resize" md-table md-row-select multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise">
+      
       <thead md-head md-order="vm.tableConfig.order" md-on-reorder="vm.tableConfig.sort.serverSideSortingCallback(0, 6)">
         <tr md-row>
           <th
