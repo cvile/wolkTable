@@ -2,11 +2,11 @@
   'use strict';
 
 	angular
-		.module('tableComponent', ['ngMaterial', 'md.data.table']);
+		.module('wolkTable', ['ngMaterial', 'md.data.table']);
 
 	angular
-		.module('tableComponent')
-		.directive('tableComponent',  tableComponentInject);
+		.module('wolkTable')
+		.directive('wolkTable',  tableComponentInject);
 
 	function tableComponentInject() {
 		var directive = {
