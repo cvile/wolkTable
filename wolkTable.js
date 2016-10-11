@@ -11,7 +11,7 @@
 	function tableComponentInject() {
 		var directive = {
 			restrict: 'E',
-			templateUrl: 'wolkTable.html',
+			templateUrl: '/bower_components/wolk-table/wolkTable.html',
 			controller: tableComponentController,
 			controllerAs: 'vm',
 			scope : {},
