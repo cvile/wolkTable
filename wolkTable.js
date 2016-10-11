@@ -4,7 +4,6 @@
 	angular
 		.module('tableComponent', ['ngMaterial', 'md.data.table']);
 
-
 	angular
 		.module('tableComponent')
 		.directive('tableComponent',  tableComponentInject);
