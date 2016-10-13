@@ -1,6 +1,6 @@
 {
   "name": "wolk-table",
-  "version": "0.1.1",
+  "version": "0.1.11",
   "description": "Table component for angular-material-data-table.",
   "main": [
     "wolkTable.js",
@@ -33,7 +33,7 @@
   "dependencies": {
     "angular": "^1.4.0",
     "angular-material": "^1.1.0",
-    "angular-material-data-table": "^0.10.9",
+    "angular-material-data-table": "0.10.8",
     "col-resizable" : "*"
   }
 }
