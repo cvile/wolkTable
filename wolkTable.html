@@ -3,81 +3,102 @@
 
   <!--SEARCH CONTAINER CONTENT-->
   <md-content id="searchContainer" ng-if="vm.tableConfig.search.serverSearch || vm.tableConfig.search.liveSearch">
-    <md-input-container id="searchInputField">
-      <label>{{::vm.tableConfig.search.searchLabel}}</label>
-      <input ng-model="vm.searchTerm" type="text">
-    </md-input-container>
-    <md-input-container id="searchButton">
-      <md-button class="md-primary md-raised">{{::vm.tableConfig.search.searchLabel}}</md-button>
-    </md-input-container>
+	<md-input-container id="searchInputField">
+	  <label>{{::vm.tableConfig.search.searchLabel}}</label>
+	  <input ng-model="vm.searchTerm" type="text">
+	</md-input-container>
+	<md-input-container id="searchButton">
+	  <md-button class="md-primary md-raised">{{::vm.tableConfig.search.searchLabel}}</md-button>
+	</md-input-container>
   </md-content>
 
   <!--ANGULAR MATERIAL DATA TABLE CONTAINER-->
-  <md-table-container>
-    <table ng-if="!vm.tableConfig.lazyLoading" md-row-select md-table multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise" table-resize>
-      <thead md-head md-order="vm.tableConfig.order" md-on-reorder="vm.tableConfig.sort.serverSideSortingCallback(0, 6)">
-        <tr md-row>
-          <th
-            md-column
-            ng-repeat="column in vm.columns track by $index"
-            md-order-by="{{column}}">
-            <span>{{column}}</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody md-body>
-        <tr 
-          md-row
-          md-select="user"
-          md-auto-select
-          md-select-id="user[vm.tableConfig.order]"
-          ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit | orderBy : vm.tableConfig.order | filter : (vm.tableConfig.search.serverSearch) ?  '' : vm.searchTerm track by $index"
-          ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
-          <td md-cell ng-repeat="(key, value) in user">{{value}}</td>
-        </tr>
-      </tbody>
-      <tfoot md-foot>
-        <tr md-row>
-          <td md-cell></td>
-          <td md-cell><strong>Total: </strong>{{vm.tableData.length}}</td>
-          <td md-cell colspan="6"></td>
-        </tr>
-      </tfoot>
-    </table>  
-  </md-table-container>
+	<md-table-container>
+		<table ng-if="!vm.tableConfig.lazyLoading" ng-attr-md-row-select="vm.tableConfig.multipleSelection" md-table multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise" table-resize>
+	  		<thead md-head md-order="vm.tableConfig.order" md-on-reorder="vm.tableConfig.sort.serverSideSortingCallback(0, 6)">
+				<tr md-row>
+					<th
+						md-column
+						ng-repeat="column in vm.columns track by $index"
+						md-order-by="{{column}}">
+						<span>{{column}}</span>
+					</th>
+					<th ng-if="vm.tableConfig.rowDelete.enabled"></th>
+				</tr>
+  			</thead>
+	  		<tbody md-body>
+				<tr 
+					md-row
+					md-select="user"
+					md-select-id="user[vm.tableConfig.order]"
+					ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit | orderBy : vm.tableConfig.order | filter : (vm.tableConfig.search.serverSearch) ?  '' : vm.searchTerm track by $index"
+					ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
+					
+					<td md-cell ng-repeat="(key, value) in user">{{value}}</td>
+					<!-- EDIT ROW -->
+					<td md-cell ng-if="vm.tableConfig.rowEdit.enabled" class="editRowCell">
+						<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+							<path d="M0 0h24v24H0z" fill="none"/>
+						</svg>
+						<md-tooltip>{{::vm.tableConfig.rowEdit.toolTipLabel}}</md-tooltip>
+					</td>
+					<!-- DELETE ROW  -->
+					<td md-cell ng-if="vm.tableConfig.rowDelete.enabled" class="deleteRowCell">
+						<svg class="deleteRowIcon" fill="#444" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+							<path d="M0 0h24v24H0z" fill="none"/>
+						</svg>
+						<md-tooltip>{{::vm.tableConfig.rowDelete.toolTipLabel}}</md-tooltip>
+					</td>
+				</tr>
+	  		</tbody>
+		</table>  
+	</md-table-container>
+
+	<!-- MULTIPLE DELETE BUTTON CONTAINER -->
+	<div id="multipleDeleteContainer" ng-if="vm.tableConfig.multipleSelection">
+		<md-button class="md-fab md-warn md-raised" ng-disabled="vm.tableConfig.selected.length === 0" aria-label="multiple delete button" id="multipleDeleteButton">
+			<svg class="deleteRowIcon" fill="#fff" height="54" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+				<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+				<path d="M0 0h24v24H0z" fill="none"/>
+			</svg>
+			<md-tooltip>delete rows</md-tooltip>
+		</md-button>  
+	</div>
 
   <br><hr>{{vm.tableConfig.selected}}<hr><br/>
   
   <!-- LAZY LOADING CONTENT (ANGULAR-MATERIAL VIRTUAL REPEATER) -->
   <table ng-if="vm.tableConfig.lazyLoading">
-    <thead>
-      <tr>
-        <th ng-repeat="column in vm.columns track by $index"></th>
-      </tr>
-    </thead>
-    <tbody ng-if="vm.tableConfig.lazyLoading" md-virtual-repeat-container id="vertical-container" md-auto-shrink="true" class="md-orient-vertical">
-      <tr
-        md-virtual-repeat="user in vm.tableData"
-        class="repeated-item"
-        md-item-size="28"
-        ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
-        
-        <td ng-repeat="(key, value) in user">
-          {{value}}
-        </td>
-      </tr>
-    </tbody>
+	<thead>
+	  <tr>
+		<th ng-repeat="column in vm.columns track by $index"></th>
+	  </tr>
+	</thead>
+	<tbody ng-if="vm.tableConfig.lazyLoading" md-virtual-repeat-container id="vertical-container" md-auto-shrink="true" class="md-orient-vertical">
+	  <tr
+		md-virtual-repeat="user in vm.tableData"
+		class="repeated-item"
+		md-item-size="28"
+		ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
+		
+		<td ng-repeat="(key, value) in user">
+		  {{value}}
+		</td>
+	  </tr>
+	</tbody>
   </table>
 
   <!--PAGINATION <CONTAINER--></CONTAINER-->
   <md-table-pagination ng-if="!vm.tableConfig.lazyLoading"
-    md-limit="vm.tableConfig.limit"
-    md-limit-options="[5, 10, 15]"
-    md-page="vm.tableConfig.page"
-    md-total="{{vm.tableData.length}}"
-    md-on-paginate="vm.tableConfig.pagingCallback()"
-    md-page-select
-    md-boundary-links="true">
+	md-limit="vm.tableConfig.limit"
+	md-limit-options="[5, 10, 15]"
+	md-page="vm.tableConfig.page"
+	md-total="{{vm.tableData.length}}"
+	md-on-paginate="vm.tableConfig.pagingCallback()"
+	md-page-select
+	md-boundary-links="true">
   </md-table-pagination>
 
 </div>

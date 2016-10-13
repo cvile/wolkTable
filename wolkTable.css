@@ -15,3 +15,13 @@
 	max-width:800px;
 	min-width:800px;
 }
+.editRowCell, .deleteRowCell:hover{
+	cursor:pointer;
+}
+#multipleDeleteContainer{
+	text-align:right;
+}
+#multipleDeleteButton{
+	margin-right:2.8em;
+	margin-top:1.5em;
+}
