@@ -58,43 +58,48 @@
 	function tableResizeInject(){
 		return {
 	        restrict: 'A',
-	        link : function(scope, element, attrs){
-	            scope.$watch('newResize', function() {
-	                setTimeout(function(){
-	                    // delete all old instances
-	                    element.colResizable({
-	                        disable : true
-	                    });
+	        link : function(scope, element, attrs, ctrl){
+	        	if(scope.$parent.vm.tableConfig.resize){
+	        		scope.$watch('newResize', function() {
+		                setTimeout(function(){
+		                    // delete all old instances
+		                    element.colResizable({
+		                        disable : true
+		                    });
 
-	                    // create new instance of resize plugin
-	                    element.colResizable({
-	                    fixed:true,
-	                    minWidth : 50,
-	                    liveDrag : false,
-	                    headerOnly : true,
-	                    gripInnerHtml:"<div class='grip'></div>", 
-	                    onResize : function(){
-	                        var temp = [];
-	                        var fullRowWidth = parseInt($("table thead tr").css('width')); //1151
+		                    // create new instance of resize plugin
+		                    element.colResizable({
+		                    fixed:true,
+		                    minWidth : 50,
+		                    liveDrag : false,
+		                    headerOnly : true,
+		                    gripInnerHtml:"<div class='grip'></div>", 
+		                    onResize : function(){
+		                        var temp = [];
+		                        var fullRowWidth = parseInt($("table thead tr").css('width')); //1151
 
-	                        $("table thead tr th").each(function(){
-	                            var columnSize = {};
-	                            var staticWidth = parseInt($(this).css('width')); // 289
-	                            var width = ((100*staticWidth)/fullRowWidth)+"%";
-	                            var id = $(this).attr('data-id');
-	                            columnSize.columnId = id;
-	                            columnSize.columnWidth = width;
-	                            temp.push(columnSize);
-	                        });
+		                        $("table thead tr th").each(function(){
+		                            var columnSize = {};
+		                            var staticWidth = parseInt($(this).css('width')); // 289
+		                            var width = ((100*staticWidth)/fullRowWidth)+"%";
+		                            var id = $(this).attr('data-id');
+		                            columnSize.columnId = id;
+		                            columnSize.columnWidth = width;
+		                            temp.push(columnSize);
+		                        });
 
-	                        // let controller know that resize is instantiated 
-	                        scope.$emit('updateColumnSize', temp);
-	                        // cashe new size in local storage for future usage
-	                        // CasheData.setLocalStorage("cashe_columnSize", JSON.stringify(temp));
-	                    }
-	                });    
-	                }, 300);
-	            }); 
+		                        // let controller know that resize is instantiated 
+		                        scope.$emit('updateColumnSize', temp);
+		                        // cashe new size in local storage for future usage
+		                        // CasheData.setLocalStorage("cashe_columnSize", JSON.stringify(temp));
+		                    }
+		                });    
+		                }, 300);
+		            }); 
+	        	}else{
+	        		return false;
+	        	}	
+	            
 	        }
 	    };
 	};

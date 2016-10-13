@@ -12,11 +12,9 @@
     </md-input-container>
   </md-content>
 
-  <!--TABLE CONTAINER-->
+  <!--ANGULAR MATERIAL DATA TABLE CONTAINER-->
   <md-table-container>
-    
-    <!-- TABLE RESIZE ENABLED -->
-    <table ng-if="vm.tableConfig.resize" md-table md-row-select multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise" table-resize>
+    <table ng-if="!vm.tableConfig.lazyLoading" md-row-select md-table multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise" table-resize>
       <thead md-head md-order="vm.tableConfig.order" md-on-reorder="vm.tableConfig.sort.serverSideSortingCallback(0, 6)">
         <tr md-row>
           <th
@@ -28,74 +26,51 @@
         </tr>
       </thead>
       <tbody md-body>
-        <!--RENDER IF SERVER SIDE SORTING IS ENABLED AND SERVER SIDE SEARCH ENABLED-->
-        <tr
-          ng-if="vm.tableConfig.serverSideSorting" 
-          md-row
-          ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit"
-          md-select="user"
-          md-select-id="user[vm.tableConfig.order]"
-          md-auto-select 
-          ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
-            <td md-cell ng-repeat="(key, value) in user">{{value}}</td>
-        </tr>
-        <!--RENDER IF SERVER SIDE SORTING IS DISABLED ( DEFAULT ) AND SERVER SIDE SEARCH DISABLED (LIVE SEARCH ENABLED)-->
         <tr 
-          ng-if="!vm.tableConfig.serverSideSorting"
           md-row
-          ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit | orderBy : vm.tableConfig.order | filter : vm.searchTerm"
           md-select="user"
+          md-auto-select
           md-select-id="user[vm.tableConfig.order]"
-          md-auto-select 
+          ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit | orderBy : vm.tableConfig.order | filter : (vm.tableConfig.search.serverSearch) ?  '' : vm.searchTerm track by $index"
           ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
-            <td md-cell ng-repeat="(key, value) in user">{{value}}</td>
+          <td md-cell ng-repeat="(key, value) in user">{{value}}</td>
         </tr>
       </tbody>
-    </table>
-    
-    <!-- TABLE RESIZE DISABLED -->
-    <table ng-if="!vm.tableConfig.resize" md-table md-row-select multiple ng-model="vm.tableConfig.selected" md-progress="vm.tablePromise">
-      
-      <thead md-head md-order="vm.tableConfig.order" md-on-reorder="vm.tableConfig.sort.serverSideSortingCallback(0, 6)">
+      <tfoot md-foot>
         <tr md-row>
-          <th
-            md-column
-            ng-repeat="column in vm.columns track by $index"
-            md-order-by="{{column}}">
-            <span>{{column}}</span>
-          </th>
+          <td md-cell></td>
+          <td md-cell><strong>Total: </strong>{{vm.tableData.length}}</td>
+          <td md-cell colspan="6"></td>
         </tr>
-      </thead>
-      <tbody md-body>
-        <!--RENDER IF SERVER SIDE SORTING IS ENABLED AND SERVER SIDE SEARCH ENABLED-->
-        <tr
-          ng-if="vm.tableConfig.serverSideSorting" 
-          md-row
-          ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit"
-          md-select="user"
-          md-select-id="user[vm.tableConfig.order]"
-          md-auto-select 
-          ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
-            <td md-cell ng-repeat="(key, value) in user">{{value}}</td>
-        </tr>
-        <!--RENDER IF SERVER SIDE SORTING IS DISABLED ( DEFAULT ) AND SERVER SIDE SEARCH DISABLED (LIVE SEARCH ENABLED)-->
-        <tr 
-          ng-if="!vm.tableConfig.serverSideSorting"
-          md-row
-          ng-repeat="user in vm.tableData | limitTo : vm.tableConfig.limit : (vm.tableConfig.page) * vm.tableConfig.limit | orderBy : vm.tableConfig.order | filter : vm.searchTerm"
-          md-select="user"
-          md-select-id="user[vm.tableConfig.order]"
-          md-auto-select 
-          ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
-            <td md-cell ng-repeat="(key, value) in user">{{value}}</td>
-        </tr>
-      </tbody>
-
-    </table>
+      </tfoot>
+    </table>  
   </md-table-container>
 
-  <!--PAGINATION CONTAINER-->
-  <md-table-pagination
+  <br><hr>{{vm.tableConfig.selected}}<hr><br/>
+  
+  <!-- LAZY LOADING CONTENT (ANGULAR-MATERIAL VIRTUAL REPEATER) -->
+  <table ng-if="vm.tableConfig.lazyLoading">
+    <thead>
+      <tr>
+        <th ng-repeat="column in vm.columns track by $index"></th>
+      </tr>
+    </thead>
+    <tbody ng-if="vm.tableConfig.lazyLoading" md-virtual-repeat-container id="vertical-container" md-auto-shrink="true" class="md-orient-vertical">
+      <tr
+        md-virtual-repeat="user in vm.tableData"
+        class="repeated-item"
+        md-item-size="28"
+        ng-style="{'background': $index % 2 === 0 ? 'white' :'whitesmoke'}">
+        
+        <td ng-repeat="(key, value) in user">
+          {{value}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!--PAGINATION <CONTAINER--></CONTAINER-->
+  <md-table-pagination ng-if="!vm.tableConfig.lazyLoading"
     md-limit="vm.tableConfig.limit"
     md-limit-options="[5, 10, 15]"
     md-page="vm.tableConfig.page"

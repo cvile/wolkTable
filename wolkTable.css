@@ -7,5 +7,11 @@
 .JCLRgrip{
 	background: #eaeaea !important;
     width: 1px !important;
-    margin-left: -15px !important;
+    margin-left: -10px !important;
+}
+			
+#vertical-container{
+	height:600px;
+	max-width:800px;
+	min-width:800px;
 }
