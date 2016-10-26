@@ -256,7 +256,7 @@
 				} 
 		    };
 
-		    vm.deleteRow = function(ev){
+		    vm.deleteRow = function(ev, _selectedItems){
 				var confirm = $mdDialog.confirm()
 					.title('Delete Confirmation')
 					.textContent('Are you sure you want to delete ? All row data will be lost')
@@ -266,8 +266,22 @@
 					.cancel('Cancel');
 
 				$mdDialog.show(confirm).then(function() {
-					console.log("you successfuly deleted item");
-					// remove from array
+					
+					if(_selectedItems.length > 1){
+						// delete many
+						vm.tableConfig.multipleSelection.deleteRowsCallback(_selectedItems).then(function(){
+							console.log("you successfuly deleted multiple items");
+						});
+					}else{
+						// delete one
+						vm.tableConfig.rowDelete.deleteCallback().then(function(){
+							console.log("you successfuly deleted one row");
+						});
+					}
+					// remove deleted ones from [selected]
+
+					// remove deleted ones from data array (table)
+
 				}, function() {
 					console.log("you canceled delete event");
 				});
