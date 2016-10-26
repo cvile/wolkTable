@@ -3,6 +3,11 @@
     margin:1em;
 }
 
+#searchButton button{
+	background: #444;
+	color:white;
+}
+
 /* RESIZE MODULE STYLING  */
 .JCLRgrip{
 	background: #eaeaea !important;
@@ -18,10 +23,35 @@
 .editRowCell, .deleteRowCell:hover{
 	cursor:pointer;
 }
+.editRowCell svg:focus{
+	outline:none;
+}
 #multipleDeleteContainer{
 	text-align:right;
 }
 #multipleDeleteButton{
 	margin-right:2.8em;
 	margin-top:1.5em;
+}
+md-checkbox.md-default-theme.md-checked .md-icon, md-checkbox.md-checked .md-icon{
+	background-color:#333;
+}
+.cancelButton{
+	background-color: rgba(158,158,158,0.2);
+}
+#editRowDialogContainer{
+	border-radius:0 !important;
+}
+#editRowDialogContainer #editDialogHeader{
+	background:#444;
+}
+#editRowDialogContainer #editDialogHeader h2{
+	font-size:15px;
+	text-transform: uppercase;
+}
+
+.editDialogToastMsg .md-toast-content{
+	background-color:#82c587 !important;
+	color:#333 !important;
+	text-align:center;
 }
