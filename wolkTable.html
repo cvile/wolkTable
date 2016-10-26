@@ -58,7 +58,7 @@
 
 	<!-- MULTIPLE DELETE BUTTON CONTAINER -->
 	<div id="multipleDeleteContainer" ng-if="vm.tableConfig.multipleSelection.enabled">
-		<md-button class="md-fab md-warn md-raised" ng-disabled="vm.tableConfig.selected.length === 0" aria-label="multiple delete button" id="multipleDeleteButton">
+		<md-button class="md-fab md-warn md-raised" ng-disabled="vm.tableConfig.selected.length <= 1" aria-label="multiple delete button" id="multipleDeleteButton" ng-click="vm.deleteRow($event, vm.tableConfig.selected)">
 			<svg class="deleteRowIcon" fill="#fff" height="54" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
 				<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
 				<path d="M0 0h24v24H0z" fill="none"/>

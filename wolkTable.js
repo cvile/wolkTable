@@ -267,7 +267,7 @@
 
 				$mdDialog.show(confirm).then(function() {
 					
-					if(_selectedItems.length > 1){
+					if(typeof _selectedItems !== 'undefined' && _selectedItems.length > 1){
 						// delete many
 						vm.tableConfig.multipleSelection.deleteRowsCallback(_selectedItems).then(function(){
 							console.log("you successfuly deleted multiple items");
